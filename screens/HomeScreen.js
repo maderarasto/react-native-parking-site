@@ -5,14 +5,20 @@ import StyledButton from '../components/StyledButton';
 import Colors from '../constants/colors';
 
 const HomeScreen = props => {
+    const onWatchSectorsClick = () => {
+        props.navigation.navigate('WatchSectors');
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.content}>
-                <Text style={styles.subtitle}>React Native</Text>
-                <Text style={styles.title}>Parking Site</Text>
+                <View>
+                    <Text style={styles.subtitle}>React Native</Text>
+                    <Text style={styles.title}>Parking Site</Text>
+                </View>
                 <View style={styles.grid}>
                     <View style={styles.gridRow}>
-                        <StyledButton style={styles.button} title="Watch Sectors" />
+                        <StyledButton style={styles.button} title="Watch Sectors" onPress={onWatchSectorsClick} />
                         <StyledButton style={styles.button} title="Measure Queue Times" />
                     </View>
                     <View style={styles.gridRow}>
@@ -35,7 +41,9 @@ const styles = StyleSheet.create({
     },
 
     content: {
+        flex: 1,
         width: '100%',
+        justifyContent: 'space-evenly',
         alignItems: 'center'
     },
 
@@ -43,6 +51,7 @@ const styles = StyleSheet.create({
         fontSize: 44,
         fontWeight: 'bold',
         lineHeight: 44,
+        textAlign: 'center',
         textTransform: 'uppercase',
         color: Colors.primary
     },

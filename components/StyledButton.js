@@ -5,12 +5,20 @@ import Colors from '../constants/colors';
 
 const StyledButton = props => {
     const onPressHandler = props.onPress ? props.onPress : () => {};
-    const colorStyle = { backgroundColor: props.color ? props.color : Colors.primary };
+    
+    const resolveBackground = () => {
+        const color = props.color ? props.color : Colors.primary;
 
+        return props.disabled ? 'lightgrey' : color;
+    }
+
+    const colorStyle = { backgroundColor: resolveBackground() };
+    const textStyle = { fontSize: props.textSize ? props.textSize : 16 };
+    
     return (
-        <TouchableNativeFeedback onPress={onPressHandler}>
+        <TouchableNativeFeedback onPress={onPressHandler} disabled={props.disabled ? props.disabled : false}>
             <View style={{...styles.button, ...props.style, ...colorStyle}}>
-                <Text style={{...styles.buttonText}}>{props.title}</Text>
+                <Text style={{...styles.buttonText, ...textStyle}}>{props.title}</Text>
             </View>
         </TouchableNativeFeedback>
     )
@@ -25,7 +33,6 @@ const styles = StyleSheet.create({
 
     buttonText: {
         textAlign: 'center',
-        fontSize: 16,
         color: 'white'
     }
 });
