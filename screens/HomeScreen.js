@@ -7,11 +7,15 @@ import Colors from '../constants/colors';
 const HomeScreen = props => {
     const onWatchSectorsClick = () => {
         props.navigation.navigate('WatchSectors');
-    }
+    };
 
     const onMeasureTimeClick = () => {
         props.navigation.navigate('MeasureTime');
-    }
+    };
+
+    const onSectorsDataClick = () => {
+        props.navigation.navigate('SectorsData');
+    };
 
     return (
         <View style={styles.container}>
@@ -26,7 +30,7 @@ const HomeScreen = props => {
                         <StyledButton style={styles.button} title="Measure Queue Times" onPress={onMeasureTimeClick} />
                     </View>
                     <View style={styles.gridRow}>
-                        <StyledButton style={styles.button} title="Sectors Data" />
+                        <StyledButton style={styles.button} title="Sectors Data" onPress={onSectorsDataClick} />
                         <StyledButton style={styles.button} title="Queue Times Data" />
                     </View>
                 </View>

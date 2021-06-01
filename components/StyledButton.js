@@ -17,7 +17,7 @@ const StyledButton = props => {
     
     return (
         <TouchableNativeFeedback onPress={onPressHandler} disabled={props.disabled ? props.disabled : false}>
-            <View style={{...styles.button, ...props.style, ...colorStyle}}>
+            <View style={{...styles.button, ...colorStyle, ...props.style}}>
                 <Text style={{...styles.buttonText, ...textStyle}}>{props.title}</Text>
             </View>
         </TouchableNativeFeedback>
@@ -26,9 +26,10 @@ const StyledButton = props => {
 
 const styles = StyleSheet.create({
     button: {
+        padding: 10,
+        borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
     },
 
     buttonText: {

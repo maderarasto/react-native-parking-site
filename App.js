@@ -7,6 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import WatchSectors from './screens/WatchSectors';
 import MeasureTime from './screens/MeasureTime';
+import SectorsData from './screens/SectorsData';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="WatchSectors" component={WatchSectors} />
                 <Stack.Screen name="MeasureTime" component={MeasureTime} />
+                <Stack.Screen name="SectorsData" component={SectorsData} />
             </Stack.Navigator>
         </NavigationContainer>
     );
