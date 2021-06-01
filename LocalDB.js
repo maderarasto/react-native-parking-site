@@ -9,7 +9,7 @@ class LocalDB {
     selectRecords(tableName, columns, whereSql='', parameters=[]) {
         return new Promise((resolve, reject) => {
             const formattedColumns = columns.join(', ');
-            const sql = `SELECT ${formattedColumns} FROM ${tableName} ${whereSql !== '' ? 'WHERE ' : ''}${whereSql}`;
+            const sql = `SELECT ${formattedColumns} FROM ${tableName} ${whereSql !== '' ? ' WHERE' : ''} ${whereSql}`;
 
             this._db.transaction(tx => tx.executeSql(sql, parameters, (_, rs) => resolve(rs), err => reject(err)));
         });
@@ -22,6 +22,14 @@ class LocalDB {
             const sql = `INSERT INTO ${tableName} (${formattedColumns}) VALUES(${placeholders})`;
             
             this._db.transaction(tx => tx.executeSql(sql, columns.map(col => object[col]), (_, rs) => resolve(rs), err => reject(err)));
+        });
+    }
+
+    deleteRecords(tableName, whereSql='', parameters=[]) {
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM ${tableName} ${whereSql !== '' ? ' WHERE' : ''} ${whereSql}`;
+
+            this._db.transaction(tx => tx.executeSql(sql, parameters, (_, rs) => resolve(rs), err => reject(err)));
         });
     }
 
