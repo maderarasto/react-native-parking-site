@@ -17,6 +17,10 @@ const HomeScreen = props => {
         props.navigation.navigate('SectorsData');
     };
 
+    const onMeasureDataClick = () => {
+        props.navigation.navigate('MeasureData');
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.content}>
@@ -31,7 +35,7 @@ const HomeScreen = props => {
                     </View>
                     <View style={styles.gridRow}>
                         <StyledButton style={styles.button} title="Sectors Data" onPress={onSectorsDataClick} />
-                        <StyledButton style={styles.button} title="Queue Times Data" />
+                        <StyledButton style={styles.button} title="Queue Times Data" onPress={onMeasureDataClick} />
                     </View>
                 </View>
             </View>

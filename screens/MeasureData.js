@@ -3,16 +3,13 @@ import {StyleSheet, View, Text} from 'react-native';
 
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
-import ButtonGroup from '../components/ButtonGroup';
 
-const SectorsData = props => {
+const MeasureData = props => {
     return (
         <View style={styles.container}>
             <ActionBar navigation={props.navigation} />
             <View style={styles.content}>
                 <View style={styles.dataToolbar}>
-                    <Text>Filter: </Text>
-                    <ButtonGroup buttons={['All', 'A', 'B', 'C', 'D']} />
                     <View style={styles.dataActions}>
                         <StyledButton style={styles.actionButton} title="E" color="green" />
                         <StyledButton style={styles.actionButton} title="V" color="red" />
@@ -21,11 +18,11 @@ const SectorsData = props => {
                 <View style={{marginTop: 15}}>
                     <View style={styles.dataRow}>
                         <Text>12.09.2020 14:14:39</Text>
-                        <Text>Sector A</Text>
+                        <Text>7.9 seconds</Text>
                     </View>
                     <View style={styles.dataRow}>
                         <Text>12.09.2020 14:14:39</Text>
-                        <Text>Sector A</Text>
+                        <Text>12.59 seconds</Text>
                     </View>
                 </View>
             </View>
@@ -46,7 +43,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal: 15,
         marginVertical: 5,
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
 
@@ -71,4 +68,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SectorsData;
+export default MeasureData;

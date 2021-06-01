@@ -8,6 +8,7 @@ import HomeScreen from './screens/HomeScreen';
 import WatchSectors from './screens/WatchSectors';
 import MeasureTime from './screens/MeasureTime';
 import SectorsData from './screens/SectorsData';
+import MeasureData from './screens/MeasureData';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
                 <Stack.Screen name="WatchSectors" component={WatchSectors} />
                 <Stack.Screen name="MeasureTime" component={MeasureTime} />
                 <Stack.Screen name="SectorsData" component={SectorsData} />
+                <Stack.Screen name="MeasureData" component={MeasureData} />
             </Stack.Navigator>
         </NavigationContainer>
     );
