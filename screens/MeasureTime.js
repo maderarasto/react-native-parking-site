@@ -1,12 +1,24 @@
 import React, {useState} from 'react';
 import {StyleSheet, ScrollView, View, Text} from 'react-native';
 
+import LocalDB from '../LocalDB';
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
 
 const MeasureTime = props => {
     const [queueCars, setQueueCars] = useState([]);
     const [lastDuration, setLastDuration] = useState(0);
+
+    const onDepartureClick = (type) => {
+        const date = new Date(Date.now());
+
+        LocalDB.insertRecord('departures', ['type', 'created_at'], {
+            type: type,
+            created_at: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+        }).then(rs => {
+
+        });
+    };
 
     const onStartClick = () => {
         const now = Date.now();
@@ -28,8 +40,13 @@ const MeasureTime = props => {
             const dateTime = `${first.localeDate} ${first.localeTime}`;
             const remainingQueue = queueCars.slice(1);
             
-            setLastDuration(duration);
-            setQueueCars([...remainingQueue]);
+            LocalDB.insertRecord('queue_times', ['duration', 'created_at'], {
+                duration: duration,
+                created_at: dateTime
+            }).then(_ => {
+                setLastDuration(duration);
+                setQueueCars([...remainingQueue]);
+            })
         }
     }
 
@@ -44,10 +61,12 @@ const MeasureTime = props => {
                     <View style={styles.buttonsRow}>
                         <StyledButton 
                             style={styles.button} 
-                            title="Turning Away" />
+                            title="Turning Away"
+                            onPress={onDepartureClick.bind(this, 'turning-away')} />
                         <StyledButton 
                             style={styles.button}
-                            title="Leaving" />
+                            title="Leaving"
+                            onPress={onDepartureClick.bind(this, 'leaving')} />
                     </View>
                 </View>
                 <View style={styles.section}>
