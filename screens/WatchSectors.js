@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
+import LocalDB from '../LocalDB';
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
 
@@ -12,12 +13,34 @@ const WatchSectors = props => {
         { sector: 'd', cars: 0 },
     ]);
 
+    useEffect(() => {
+        LocalDB.selectRecords('sectors', ['sector', 'type', 'created_at']).then(rs => {
+            const newSectors = [...sectors];
+
+            rs.rows._array.forEach(sectorItem => {    
+                const change = sectorItem.type === 'departure' ? -1 : 1;
+                const found = newSectors.find(s => s.sector === sectorItem.sector);
+
+                found.cars += change;
+            });
+
+            setSectors(newSectors);
+        });
+    }, []);
+
     const onButtonHandler = (sector, operation) => {
+        const date = new Date(Date.now());
         const sectorCars = operation === 'minus' ? sector.cars - 1 : sector.cars + 1;
         const tempSectors = [...sectors].filter(s => s.sector !== sector.sector);
         const newSectors = [...tempSectors, { sector: sector.sector, cars: sectorCars }];
-
-        setSectors([...newSectors.sort((a, b) => a.sector.localeCompare(b.sector))]);
+        
+        LocalDB.insertRecord('sectors', ['sector', 'type', 'created_at'], {
+            sector: sector.sector, 
+            type: operation === 'minus' ? 'departure' : 'arrival',
+            created_at: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+        }).then(rs => {
+            setSectors([...newSectors.sort((a, b) => a.sector.localeCompare(b.sector))]);
+        }).catch(err => console.error(err));
     }
 
     return (
