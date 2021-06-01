@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Button} from 'react-native';
 
 import StyledButton from '../components/StyledButton';
 import Colors from '../constants/colors';
@@ -7,6 +7,10 @@ import Colors from '../constants/colors';
 const HomeScreen = props => {
     const onWatchSectorsClick = () => {
         props.navigation.navigate('WatchSectors');
+    }
+
+    const onMeasureTimeClick = () => {
+        props.navigation.navigate('MeasureTime');
     }
 
     return (
@@ -19,7 +23,7 @@ const HomeScreen = props => {
                 <View style={styles.grid}>
                     <View style={styles.gridRow}>
                         <StyledButton style={styles.button} title="Watch Sectors" onPress={onWatchSectorsClick} />
-                        <StyledButton style={styles.button} title="Measure Queue Times" />
+                        <StyledButton style={styles.button} title="Measure Queue Times" onPress={onMeasureTimeClick} />
                     </View>
                     <View style={styles.gridRow}>
                         <StyledButton style={styles.button} title="Sectors Data" />

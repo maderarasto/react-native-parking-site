@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
 
     buttonText: {
         textAlign: 'center',
+        textTransform: 'uppercase',
         color: 'white'
     }
 });
