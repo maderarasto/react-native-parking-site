@@ -59,12 +59,14 @@ const WatchSectors = props => {
                             <View style={styles.buttonsRow}>
                                 <StyledButton 
                                     style={styles.button} 
-                                    title="MINUS"
+                                    icon="minus"
+                                    iconSize={24}
                                     disabled={sector.cars === 0}
                                     onPress={onButtonHandler.bind(this, sector, 'minus')} />
                                 <StyledButton 
                                     style={styles.button} 
-                                    title="PLUS" 
+                                    icon="plus"
+                                    iconSize={24}
                                     onPress={onButtonHandler.bind(this, sector, 'plus')} />
                             </View>
                         </View>

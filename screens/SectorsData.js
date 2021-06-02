@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, FlatList, Text, Alert} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
+import {FontAwesome5} from '@expo/vector-icons';
 
 import LocalDB from '../utils/LocalDB';
 import File from '../utils/File';
@@ -8,6 +9,7 @@ import File from '../utils/File';
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
 import ButtonGroup from '../components/ButtonGroup';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const SectorsData = props => {
     const [sectorsData, setSectorsData] = useState([]);
@@ -77,7 +79,10 @@ const SectorsData = props => {
     const renderItem = ({item}) => (
         <View style={styles.dataRow}>
             <Text>{item.created_at}</Text>
-            <Text>Sector {item.sector.toUpperCase()}</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '25%'}}>
+                <FontAwesome5 name="warehouse" size={18} color={Colors.primary} />
+                <Text>Sector {item.sector.toUpperCase()}</Text>
+            </View>
         </View>
     );
 
@@ -91,8 +96,18 @@ const SectorsData = props => {
                         buttons={['All', 'A', 'B', 'C', 'D']} 
                         onPress={onFilterButtonPress} />
                     <View style={styles.dataActions}>
-                        <StyledButton style={styles.actionButton} title="E" color="green" onPress={onExportButtonPress} />
-                        <StyledButton style={styles.actionButton} title="V" color="red" onPress={onClearButtonPress} />
+                        <StyledButton 
+                            style={styles.actionButton} 
+                            icon="file-excel"
+                            iconSize={20}
+                            color="green" 
+                            onPress={onExportButtonPress} />
+                        <StyledButton 
+                            style={styles.actionButton} 
+                            icon="trash"
+                            iconSize={20}
+                            color="red" 
+                            onPress={onClearButtonPress} />
                     </View>
                 </View>
                 <FlatList 
@@ -130,8 +145,9 @@ const styles = StyleSheet.create({
     actionButton: {
         width: 40,
         height: 40,
+        marginLeft: 5,
+        padding: 5,
         borderRadius: 5,
-        marginLeft: 5
     },
 
     dataRow: {

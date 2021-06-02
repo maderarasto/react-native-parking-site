@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, FlatList, Text, Alert} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
+import {FontAwesome5} from '@expo/vector-icons';
 
 import LocalDB from '../utils/LocalDB';
 import File from '../utils/File';
+import Colors from '../constants/colors';
 
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
@@ -56,7 +58,10 @@ const MeasureData = props => {
     const renderItem = ({item}) => (
         <View style={styles.dataRow}>
             <Text>{item.created_at}</Text>
-            <Text>{item.duration} seconds</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '30%'}}>
+                <FontAwesome5 name="stopwatch" size={20} color={Colors.primary} />
+                <Text>{item.duration} seconds</Text>
+            </View>
         </View>
     );
 
@@ -66,8 +71,18 @@ const MeasureData = props => {
             <View style={styles.content}>
                 <View style={styles.dataToolbar}>
                     <View style={styles.dataActions}>
-                        <StyledButton style={styles.actionButton} title="E" color="green" onPress={onExportButtonPress} />
-                        <StyledButton style={styles.actionButton} title="V" color="red" onPress={onClearButtonPress} />
+                        <StyledButton 
+                            style={styles.actionButton} 
+                            icon="file-excel"
+                            iconSize={20}
+                            color="green" 
+                            onPress={onExportButtonPress} />
+                        <StyledButton 
+                            style={styles.actionButton} 
+                            icon="trash"
+                            iconSize={20}
+                            color="red" 
+                            onPress={onClearButtonPress} />
                     </View>
                 </View>
                 <FlatList

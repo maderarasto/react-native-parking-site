@@ -10,7 +10,12 @@ const ActionBar = props => {
 
     return (
         <View style={styles.actionBar}>
-            <TransparentButton style={styles.backButton} title="Back" textColor="white" onPress={onBackButtonPressed} />
+            <TransparentButton 
+                style={styles.backButton} 
+                icon="arrow-left" 
+                iconSize={20} 
+                textColor="white" 
+                onPress={onBackButtonPressed} />
             <Text style={styles.title}>React Native Parking Site</Text>
         </View>
     )

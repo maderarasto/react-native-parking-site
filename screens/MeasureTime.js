@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, ScrollView, View, Text} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
+import {FontAwesome5} from '@expo/vector-icons';
 
 import LocalDB from '../utils/LocalDB';
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const MeasureTime = props => {
     const [queueCars, setQueueCars] = useState([]);
@@ -75,10 +77,14 @@ const MeasureTime = props => {
                         <StyledButton 
                             style={styles.button} 
                             title="Turning Away"
+                            icon="redo"
+                            iconSize={32}
                             onPress={onDepartureClick.bind(this, 'turning-away')} />
                         <StyledButton 
                             style={styles.button}
                             title="Leaving"
+                            icon="arrow-left"
+                            iconSize={32}
                             onPress={onDepartureClick.bind(this, 'leaving')} />
                     </View>
                 </View>
@@ -89,11 +95,13 @@ const MeasureTime = props => {
                     <View style={styles.buttonsRow}>
                         <StyledButton 
                             style={styles.button} 
-                            title="Start" 
+                            icon="play"
+                            iconSize={32}
                             onPress={onStartClick} />
                         <StyledButton 
                             style={styles.button}
-                            title="Stop"
+                            icon="stop"
+                            iconSize={32}
                             onPress={onStopClick} />
                     </View>
                 </View>
@@ -106,6 +114,7 @@ const MeasureTime = props => {
                         {queueCars.map((car, index) => {
                             return (
                                 <View key={index} style={styles.queueItem}>
+                                    <FontAwesome5 name="car" size={20} color={Colors.primary} />
                                     <Text>{car.localeDate} {car.localeTime}</Text>
                                 </View>
                             );
@@ -147,8 +156,8 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: 100,
-        height: 100,
+        width: 110,
+        height: 110,
         borderRadius: 15
     },
 
@@ -160,7 +169,7 @@ const styles = StyleSheet.create({
 
     queueItem: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         marginVertical: 15,
     }
 });

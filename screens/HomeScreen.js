@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 
 import StyledButton from '../components/StyledButton';
 import Colors from '../constants/colors';
@@ -30,12 +30,32 @@ const HomeScreen = props => {
                 </View>
                 <View style={styles.grid}>
                     <View style={styles.gridRow}>
-                        <StyledButton style={styles.button} title="Watch Sectors" onPress={onWatchSectorsClick} />
-                        <StyledButton style={styles.button} title="Measure Queue Times" onPress={onMeasureTimeClick} />
+                        <StyledButton 
+                            style={styles.button} 
+                            title="Watch Sectors"
+                            icon="th-large"
+                            iconSize={72} 
+                            onPress={onWatchSectorsClick} />
+                        <StyledButton 
+                            style={styles.button} 
+                            title="Measure Queue Times" 
+                            icon="stopwatch"
+                            iconSize={72}
+                            onPress={onMeasureTimeClick} />
                     </View>
                     <View style={styles.gridRow}>
-                        <StyledButton style={styles.button} title="Sectors Data" onPress={onSectorsDataClick} />
-                        <StyledButton style={styles.button} title="Queue Times Data" onPress={onMeasureDataClick} />
+                        <StyledButton 
+                            style={styles.button} 
+                            title="Sectors Data" 
+                            icon="th-list"
+                            iconSize={72}
+                            onPress={onSectorsDataClick} />
+                        <StyledButton 
+                            style={styles.button} 
+                            title="Queue Times Data" 
+                            icon="th-list"
+                            iconSize={72}
+                            onPress={onMeasureDataClick} />
                     </View>
                 </View>
             </View>
@@ -89,6 +109,7 @@ const styles = StyleSheet.create({
     button: {
         width: 150,
         height: 150,
+        borderRadius: 10
     }
 });
 

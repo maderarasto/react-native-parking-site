@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableNativeFeedback} from 'react-native';
+import {FontAwesome5} from '@expo/vector-icons';
 
 import Colors from '../constants/colors';
 
@@ -12,13 +13,18 @@ const StyledButton = props => {
         return props.disabled ? 'lightgrey' : color;
     }
 
-    const colorStyle = { backgroundColor: resolveBackground() };
+    const buttonStyle = { 
+        justifyContent: props.icon ? 'space-evenly' : 'center',
+        backgroundColor: resolveBackground() 
+    };
+
     const textStyle = { fontSize: props.textSize ? props.textSize : 16 };
     
     return (
         <TouchableNativeFeedback onPress={onPressHandler} disabled={props.disabled ? props.disabled : false}>
-            <View style={{...styles.button, ...colorStyle, ...props.style}}>
-                <Text style={{...styles.buttonText, ...textStyle}}>{props.title}</Text>
+            <View style={{...styles.button, ...buttonStyle, ...props.style}}>
+                { props.icon && <FontAwesome5 name={props.icon} size={props.iconSize} color="white" /> }
+                { props.title && <Text style={{...styles.buttonText, ...textStyle}}>{props.title}</Text> }
             </View>
         </TouchableNativeFeedback>
     )
@@ -28,7 +34,7 @@ const styles = StyleSheet.create({
     button: {
         padding: 10,
         borderRadius: 5,
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
     },
 
