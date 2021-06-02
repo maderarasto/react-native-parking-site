@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 
 import LocalDB from '../utils/LocalDB';
 import ActionBar from '../components/ActionBar';
@@ -40,6 +41,7 @@ const WatchSectors = props => {
             created_at: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
         }).then(rs => {
             setSectors([...newSectors.sort((a, b) => a.sector.localeCompare(b.sector))]);
+            showMessage({message: `Record with ${operation === 'minus' ? 'leaving' : 'arriving'} car successfully saved.`, type: 'success'})
         }).catch(err => console.error(err));
     }
 

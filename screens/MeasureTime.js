@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, ScrollView, View, Text} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 
 import LocalDB from '../utils/LocalDB';
 import ActionBar from '../components/ActionBar';
@@ -16,7 +17,10 @@ const MeasureTime = props => {
             type: type,
             created_at: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
         }).then(rs => {
+            const messageType = rs.insertId > 0 ? 'success' : 'danger';
+            const message = rs.insertId > 0 ? `Record with ${type.replace('-', ' ')} car successfully saved.` : 'There is problem with saving record';
 
+            showMessage({message: message, type: messageType});
         });
     };
 
@@ -43,9 +47,18 @@ const MeasureTime = props => {
             LocalDB.insertRecord('queue_times', ['duration', 'created_at'], {
                 duration: duration,
                 created_at: dateTime
-            }).then(_ => {
-                setLastDuration(duration);
-                setQueueCars([...remainingQueue]);
+            }).then(rs => {
+                let messageType = 'danger';
+                let message = 'There is a problem with saving record.';
+
+                if (rs.insertId > 0) {
+                    messageType = 'success';
+                    message = 'Record with waited car in the queue successfully saved.';
+
+                    setLastDuration(duration);
+                    setQueueCars([...remainingQueue]);
+                    showMessage({ message: message, type: messageType });
+                }
             })
         }
     }
@@ -91,7 +104,6 @@ const MeasureTime = props => {
                     </View>
                     <View>
                         {queueCars.map((car, index) => {
-                            console.log(car, index);
                             return (
                                 <View key={index} style={styles.queueItem}>
                                     <Text>{car.localeDate} {car.localeTime}</Text>
