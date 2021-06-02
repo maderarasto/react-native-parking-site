@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, FlatList, Text} from 'react-native';
+import {StyleSheet, View, FlatList, Text, Alert} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 
-import LocalDB from '../LocalDB';
+import LocalDB from '../utils/LocalDB';
+import File from '../utils/File';
+
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
 import ButtonGroup from '../components/ButtonGroup';
@@ -39,17 +42,37 @@ const SectorsData = props => {
             })
     };
 
-    const onClearButtonPress = () => {
-        LocalDB.deleteRecords('sectors')
-            .then(_ => {
-                setSectorsData([]);
+    const onExportButtonPress = () => {
+        LocalDB.selectRecords('sectors', ['sector', 'type', 'created_at'])
+            .then(rs => {
+                const file = new File('export_sectors.csv');
+                
+                rs.rows._array.forEach(item => file.putLine(`${item.sector};${item.type};${item.created_at}`));
+                file.flush().then(() => {
+                    showMessage({ message: 'Sectors data successfully exported.', type: 'success' });
+                });
             });
     }
 
-    const showDefaultMessage = () => {
-        if (sectorsData.length === 0)
-            return <Text style={styles.defaultMessage}>No sectors data found.</Text>;
-    } 
+    const onClearButtonPress = () => {
+        Alert.alert('Clear data', 'Are you sure you want to clear data?', [
+            { text: 'cancel', onPress: () => {}, style: 'cancel' },
+            { text: 'clear', onPress: () => {
+                LocalDB.deleteRecords('sectors')
+                    .then(_ => {
+                        setSectorsData([]);
+                        showMessage({ message: 'Sectors data successfully cleared.', type: 'success'});
+                    });
+            }, style: 'destructive' },
+        ], { cancelable: true });
+        
+    }
+
+    const defaultMessage = (
+        <View style={styles.defaultContainer}>
+            <Text style={styles.defaultMessage}>No sectors data found.</Text>
+        </View>
+    );
 
     const renderItem = ({item}) => (
         <View style={styles.dataRow}>
@@ -68,7 +91,7 @@ const SectorsData = props => {
                         buttons={['All', 'A', 'B', 'C', 'D']} 
                         onPress={onFilterButtonPress} />
                     <View style={styles.dataActions}>
-                        <StyledButton style={styles.actionButton} title="E" color="green" />
+                        <StyledButton style={styles.actionButton} title="E" color="green" onPress={onExportButtonPress} />
                         <StyledButton style={styles.actionButton} title="V" color="red" onPress={onClearButtonPress} />
                     </View>
                 </View>
@@ -77,7 +100,7 @@ const SectorsData = props => {
                     renderItem={renderItem}
                     keyExtractor={(_, index) => index.toString()}
                     contentContainerStyle={{flexGrow: 1, marginTop: 15}}
-                    ListEmptyComponent={<View style={styles.defaultContainer}><Text style={styles.defaultMessage}>No sectors data found.</Text></View>} />
+                    ListEmptyComponent={defaultMessage} />
             </View>
         </View>
     );

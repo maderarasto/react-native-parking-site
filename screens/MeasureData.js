@@ -1,30 +1,81 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, FlatList, Text, Alert} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
+
+import LocalDB from '../utils/LocalDB';
+import File from '../utils/File';
 
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
 
 const MeasureData = props => {
+    const [queueTimesData, setQueueTimesData] = useState([]);
+
+    useEffect(() => {
+        LocalDB.selectRecords('queue_times', ['duration', 'created_at'])
+            .then(rs => {
+                const queueTimes = rs.rows._array.map(item => ({
+                    duration: item.duration,
+                    created_at: item.created_at
+                }));
+                setQueueTimesData(queueTimes);
+            });
+    }, []);
+
+    const onExportButtonPress = () => {
+        LocalDB.selectRecords('queue_times', ['duration', 'created_at'])
+            .then(rs => {
+                const file = new File('export_queue_times.csv');
+                
+                rs.rows._array.forEach(item => file.putLine(`${item.duration};${item.created_at}`));
+                file.flush().then(() => {
+                    showMessage({ message: 'Queue times data successfully exported.', type: 'success' });
+                });
+            });
+    }
+
+    const onClearButtonPress = () => {
+        Alert.alert('Clear data', 'Are you sure you want to clear data?', [
+            { text: 'cancel', onPress: () => {}, style: 'cancel' },
+            { text: 'clear', onPress: () => {
+                LocalDB.deleteRecords('queue_times')
+                    .then(_ => {
+                        setQueueTimesData([]);
+                        showMessage({ message: 'Queue times data successfully cleared.', type: 'success'});
+                    });
+            }, style: 'destructive' },
+        ], { cancelable: true });
+    }
+
+    const defaultMessage = (
+        <View style={styles.defaultContainer}>
+            <Text style={styles.defaultMessage}>No queue times data found.</Text>
+        </View>
+    );
+
+    const renderItem = ({item}) => (
+        <View style={styles.dataRow}>
+            <Text>{item.created_at}</Text>
+            <Text>{item.duration} seconds</Text>
+        </View>
+    );
+
     return (
         <View style={styles.container}>
             <ActionBar navigation={props.navigation} />
             <View style={styles.content}>
                 <View style={styles.dataToolbar}>
                     <View style={styles.dataActions}>
-                        <StyledButton style={styles.actionButton} title="E" color="green" />
-                        <StyledButton style={styles.actionButton} title="V" color="red" />
+                        <StyledButton style={styles.actionButton} title="E" color="green" onPress={onExportButtonPress} />
+                        <StyledButton style={styles.actionButton} title="V" color="red" onPress={onClearButtonPress} />
                     </View>
                 </View>
-                <View style={{marginTop: 15}}>
-                    <View style={styles.dataRow}>
-                        <Text>12.09.2020 14:14:39</Text>
-                        <Text>7.9 seconds</Text>
-                    </View>
-                    <View style={styles.dataRow}>
-                        <Text>12.09.2020 14:14:39</Text>
-                        <Text>12.59 seconds</Text>
-                    </View>
-                </View>
+                <FlatList
+                    data={queueTimesData}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()} 
+                    contentContainerStyle={{flexGrow: 1, marginTop: 15}}
+                    ListEmptyComponent={defaultMessage} />
             </View>
         </View>
     );
@@ -65,6 +116,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: 'lightgrey',
         justifyContent: 'space-between'
+    },
+
+    defaultContainer: {
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    defaultMessage: {
+        color: 'grey'
     }
 });
 

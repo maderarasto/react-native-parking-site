@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
-import LocalDB from '../LocalDB';
+import LocalDB from '../utils/LocalDB';
 import ActionBar from '../components/ActionBar';
 import StyledButton from '../components/StyledButton';
 
